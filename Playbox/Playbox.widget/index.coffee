@@ -4,7 +4,7 @@
 # https://github.com/Pe8er/Ubersicht-Widgets
 # I don't know how to write code, so I obviously pulled pieces from all over the place, particularly from Chris Johnson's World Clock widget. Also big thanks to Josh "Baby Boi" Rutherford.
 
-command: "osascript 'Now-Playing.widget/Get Current Track.scpt'"
+command: "osascript 'Playbox.widget/Get Current Track.scpt'"
 
 refreshFrequency: 1000
 
