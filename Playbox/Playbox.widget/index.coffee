@@ -15,9 +15,9 @@ style: """
   scale = 1
   bg-blur = 20px
 
-  bottom: 6pt * scale
-  left: 6pt * scale
-  width: 250px * scale
+  bottom: (58px + 8) * scale
+  left: 8px * scale
+  width: 325px * scale
   overflow: hidden
   white-space: nowrap
   opacity: 0
@@ -27,12 +27,13 @@ style: """
     font-family: "Helvetica Neue"
     text-align: left
     font-size: 8pt * scale
-    line-height: (20% / scale) * @font-size
+    line-height: 12pt * scale
     -webkit-font-smoothing: antialiased
     color: white
     background: black02
     border: 1px * scale solid white06
-    padding: 6px 12px * scale
+    padding: (6px * scale) (12px * scale)
+    height: 38px * scale
 
   .progress
     width: @width
@@ -62,6 +63,10 @@ style: """
 
   .album, .by
     color: white06
+
+  .rating
+    float: right
+    position: relative
   """
 
 render: -> """
@@ -96,8 +101,8 @@ update: (output, domEl) ->
         <div class='song'>" + values[1] + "</div>
         <div class='by'> by </div>
         <div class='artist'>" + values[0] + "</div>
-        <div class='album'>" + values[2] + "</div>
         <div class='rating'>" + values[3] + "</div>
+        <div class='album'>" + values[2] + "</div>
         <div class='progress'></div>
       </div>"
   else
