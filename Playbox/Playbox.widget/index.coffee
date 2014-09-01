@@ -1,4 +1,3 @@
-
 # A widget that shows what's currently playing in either iTunes or Spotify.
 # Assembled by Piotr Gajos
 # https://github.com/Pe8er/Ubersicht-Widgets
@@ -87,8 +86,10 @@ update: (output, domEl) ->
   # Progress bar things
   tDuration = values[4]
   tPosition = values[5]
-  tWidth = $(domEl).width();
-  tCurrent = (tPosition / tDuration) * tWidth
+  tCurrent = '0'
+  if tDuration != 'NA'
+    tWidth = $(domEl).width();
+    tCurrent = (tPosition / tDuration) * tWidth
 
   # Make it disappear if nothing is playing
   if values[0] != 'Nothing playing'
@@ -103,7 +104,7 @@ update: (output, domEl) ->
         <div class='artist'>" + values[0] + "</div>
         <div class='rating'>" + values[3] + "</div>
         <div class='album'>" + values[2] + "</div>
-        <div class='progress'></div>
+        <div class='progress' style='width: " + tCurrent + "px'></div>
       </div>"
   else
     $(domEl).animate({ opacity: 0 }, 500)
@@ -111,10 +112,5 @@ update: (output, domEl) ->
   # Set the HTML of our main DIV.
   div.html(medianowHTML)
 
-  if tDuration == 'NA'
-    $(domEl).find('.progress').css width: "0"
-  else
-    $(domEl).find('.progress').css width: tCurrent
-
   afterRender: (domEl) ->
-  uebersicht.makeBgSlice(el) for el in $(domEl).find '.media-bg-slice'
+  uebersicht.makeBgSlice($(domEl).find('.media-bg-slice')[0])
