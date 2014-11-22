@@ -85,8 +85,8 @@ update: (output, domEl) ->
   medianowHTML = ''
 
   # Progress bar things
-  tDuration = values[4]
-  tPosition = values[5]
+  tDuration = values[4].replace(',','.')
+  tPosition = values[5].replace(',','.')
   tWidth = $(domEl).width();
   tCurrent = (tPosition / tDuration) * tWidth
 
