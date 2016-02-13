@@ -1,0 +1,12 @@
+#!/bin/sh
+# echo "Hawaii;`export TZ='Pacific/Honolulu';date +'%-l:%M %p';unset TZ`"
+# echo "Alaska;`export TZ='America/Anchorage';date +'%-l:%M %p';unset TZ`"
+echo "Cupertino;`export TZ='US/Pacific';date +'%-l:%M %p';unset TZ`"
+# echo "Mountain;`export TZ='US/Mountain';date +'%-l:%M %p';unset TZ`"
+# echo "Central;`export TZ='US/Central';date +'%-l:%M %p';unset TZ`"
+# echo "Eastern;`export TZ='US/Eastern';date +'%-l:%M %p';unset TZ`"
+echo "Wrocław;`export TZ='Europe/Warsaw';date +'%-l:%M %p';unset TZ`"
+# echo "Paris;`export TZ='Europe/Paris';date +'%-l:%M %p';unset TZ`"
+# echo "Moscow;`export TZ='Europe/Moscow';date +'%-l:%M %p';unset TZ`"
+# echo "India;`export TZ='Asia/Kolkata';date +'%-l:%M %p';unset TZ`"
+# echo "Shanghai;`export TZ='Asia/Shanghai';date +'%-l:%M %p';unset TZ`"
