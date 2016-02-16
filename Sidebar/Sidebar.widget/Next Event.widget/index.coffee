@@ -85,15 +85,15 @@ update: (output, domEl) ->
   $(domEl).find('.meta').html(values[2])
 
   if values[0] == 'No Events'
-    $(domEl).find('.wrapper').css('height', '0')
+    $(domEl).find('.wrapper').css('display', 'none')
     $(domEl).parent('div').css('margin-top', '-1px')
   else
-    $(domEl).find('.wrapper').css('height', '48px')
+    $(domEl).find('.wrapper').css('display', 'block')
 
   if parseInt(values[2]) != 0
-    $(domEl).find('.meta').css('height', 'auto')
+    $(domEl).find('.meta').css('display', 'block')
   else
-    $(domEl).find('.meta').css('height', '0')
+    $(domEl).find('.meta').css('display', 'none')
 
   # Sort out flex-box positioning.
   $(domEl).parent('div').css('order', '2')
