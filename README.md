@@ -3,7 +3,7 @@
 ![](https://raw.githubusercontent.com/Pe8er/Sidebar.Widget/master/screenshot.png)
 
 A multi-widget containing:
-- Playbox with iTunes and Spotify support
+- Playbox with iTunes and Spotify support (hides dynamically)
 - Battery monitor
 - Weather
 - Time elapsed from an event counter
@@ -15,4 +15,8 @@ It supports flex positioning, easy background blur and tons of probably very poo
 
 [See my other widgets](https://github.com/Pe8er/Ubersicht-Widgets)
 
+## TODO
 
+- As always, keep cleaning up the code
+- Add cover art support for Spotify
+- Improve time elapsed logic
