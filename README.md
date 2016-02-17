@@ -8,7 +8,7 @@ A multi-widget containing:
 - Weather
 - Time elapsed from an event counter
 - 2x world clock
-- Time until next calendar event (uses icalbuddy)
+- Time until next calendar event (uses [icalbuddy](http://hasseg.org/icalBuddy/))
 - Calendar
 
 It supports flex positioning, easy background blur and tons of probably very poorly written code.
