@@ -13,4 +13,6 @@ A multi-widget containing:
 
 It supports flex positioning, easy background blur and tons of probably very poorly written code.
 
+[See my other widgets](https://github.com/Pe8er/Ubersicht-Widgets)
+
 
