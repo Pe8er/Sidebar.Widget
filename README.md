@@ -1,6 +1,6 @@
 # Sidebar for [Übersicht](http://tracesof.net/uebersicht/)
 
-![](https://raw.githubusercontent.com/Pe8er/uWidgets-Distribution/master/Sidebar/screenshot.png)
+![](https://raw.githubusercontent.com/Pe8er/Sidebar.Widget/master/screenshot.png)
 
 A multi-widget containing:
 - Playbox with iTunes and Spotify support
