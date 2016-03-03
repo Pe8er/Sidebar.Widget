@@ -1,6 +1,6 @@
 # Sidebar for [Übersicht](http://tracesof.net/uebersicht/)
 
-![](https://raw.githubusercontent.com/Pe8er/Sidebar.Widget/master/screenshot.png)
+![](http://static1.squarespace.com/static/56390e05e4b0faef9e987c3a/t/56c4f4712eeb813ed38adc37/1455773286117/?format=2500w)
 
 ## [Download](https://github.com/Pe8er/Sidebar.Widget/raw/master/Sidebar.widget.zip)
 
