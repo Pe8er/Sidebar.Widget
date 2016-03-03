@@ -25,8 +25,8 @@ if musicapp is "iTunes" then
 		end if
 	end if
 else if musicapp is "Spotify" then
-	try
-		tell application "Spotify" to if player state is playing then
+	tell application "Spotify"
+		if player state is playing then
 			set {aname, alname} to {artist, album} of current track
 			set filename to my encode_text(aname & "-" & alname & ".png" as string, true, false)
 			set myexists to my checkFile(filename)
@@ -34,35 +34,27 @@ else if musicapp is "Spotify" then
 			if myexists is false then
 				try
 					set rawXML to (do shell script "curl -m 2 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=" & quoted form of (my encode_text(aname, true, false)) & "&album=" & quoted form of (my encode_text(alname, true, false)) & "&api_key=" & apiKey & "'")
-					try
-						set AppleScript's text item delimiters to "extralarge\">"
-						set rawXML to text item 2 of rawXML
-						set AppleScript's text item delimiters to "</image>"
-						set coverURL to text item 1 of rawXML
-						set AppleScript's text item delimiters to ""
-					on error e
-						display dialog e with title "Last.fm metadata processing failed"
-					end try
+					set AppleScript's text item delimiters to "extralarge\">"
+					set rawXML to text item 2 of rawXML
+					set AppleScript's text item delimiters to "</image>"
+					set coverURL to text item 1 of rawXML
+					set AppleScript's text item delimiters to ""
 				on error e
-					display dialog e with title "Last.fm metadata curl failed"
+					display dialog e with title "Last.fm metadata download failed"
 				end try
-				if coverURL is not "" then
-					try
-						do shell script "curl -o " & quoted form of (mypath & filename) & space & coverURL
-					on error e
-						display dialog e with title "Cover download curl failed"
-					end try
+				try
+					do shell script "curl -o " & quoted form of (mypath & filename) & space & coverURL
 					my deleteoldcovers(filename)
-				end if
+				on error
+					return "default.png"
+				end try
 			end if
 		end if
-	on error e
-		display dialog e with title "Last.fm metadata curl and conversion failed"
-	end try
-	
-	
-	return filename
+	end tell
 end if
+
+return filename
+
 (* 
 	Maybe Spotify fixes cover art retrieval someday…
 	
