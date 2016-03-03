@@ -2,7 +2,7 @@
 
 ![](https://raw.githubusercontent.com/Pe8er/Sidebar.Widget/master/screenshot.png)
 
-## [Download](https://github.com/Pe8er/Sidebar.Widget/blob/master/Sidebar.widget.zip)
+## [Download](https://github.com/Pe8er/Sidebar.Widget/raw/master/Sidebar.widget.zip)
 
 A multi-widget containing:
 - Playbox with iTunes and Spotify support (hides dynamically)
