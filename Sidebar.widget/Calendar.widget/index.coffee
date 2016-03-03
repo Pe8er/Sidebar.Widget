@@ -57,7 +57,7 @@ style: """
 
   .today
     font-weight bold
-    background white02
+    background white05
     border-radius 50%
     width 24px
     height 24px
@@ -65,7 +65,7 @@ style: """
     padding 0
 
   .grey
-    color: white02
+    color: white05
 """
 
 render: -> """

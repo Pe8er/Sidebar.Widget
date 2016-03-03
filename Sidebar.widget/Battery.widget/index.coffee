@@ -11,7 +11,6 @@ style: """
   white1 = rgba(white,1)
   white05 = rgba(white,0.5)
   white02 = rgba(white,0.2)
-  black02 = rgba(black,0.2)
 
   width 176px
   overflow hidden
