@@ -22,5 +22,4 @@ It supports flex positioning, easy background blur and tons of probably very poo
 ## TODO
 
 - As always, keep cleaning up the code
-- Add cover art support for Spotify
 - Improve time elapsed logic
