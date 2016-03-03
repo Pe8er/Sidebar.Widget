@@ -4,7 +4,7 @@
 
 command: "sh 'Sidebar.widget/Playbox.widget/playbox.sh'"
 
-refreshFrequency: '2s'
+refreshFrequency: '1s'
 
 style: """
 
