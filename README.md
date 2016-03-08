@@ -1,6 +1,8 @@
 # Sidebar for [Übersicht](http://tracesof.net/uebersicht/)
 
-![](https://raw.githubusercontent.com/Pe8er/Sidebar.Widget/master/screenshot.png)
+![](http://static1.squarespace.com/static/56390e05e4b0faef9e987c3a/t/56c4f4712eeb813ed38adc37/1455773286117/?format=2500w)
+
+## [Download](https://github.com/Pe8er/Sidebar.Widget/raw/master/Sidebar.widget.zip)
 
 A multi-widget containing:
 - Playbox with iTunes and Spotify support (hides dynamically)
@@ -15,8 +17,9 @@ It supports flex positioning, easy background blur and tons of probably very poo
 
 [See my other widgets](https://github.com/Pe8er/Ubersicht-Widgets)
 
+[Version History](https://github.com/Pe8er/Sidebar.Widget/wiki/Version-History)
+
 ## TODO
 
 - As always, keep cleaning up the code
-- Add cover art support for Spotify
 - Improve time elapsed logic
