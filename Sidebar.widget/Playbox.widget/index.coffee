@@ -27,6 +27,8 @@ style: """
   .art
     width 44px
     height @width
+    background-image url(Sidebar.widget/Playbox.widget/as/default.png)
+    -webkit-transition background-image 0.5s ease-in-out
     background-size cover
     float left
     margin 0 8px 0 0
@@ -72,7 +74,7 @@ render: (output) ->
   # Create the DIVs for each piece of data.
   medianowHTML = "
     <div class='wrapper'>
-      <div class='art' style='background-image: url(Sidebar.widget/Playbox.widget/as/default.png)'></div>
+      <div class='art'></div>
       <div class='text'>
         <div class='song'>" + values[1] + "</div>
         <div class='artist'>" + values[0] + "</div>
@@ -114,7 +116,8 @@ update: (output, domEl) ->
     $(domEl).find('.album').html(values[2])
     $(domEl).find('.progress').css width: tCurrent
     if tArtwork isnt currArt
-      $(domEl).find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/'+tArtwork+')')
+      # $(domEl).find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/'+tArtwork+')')
+      $(domEl).find('.art').css('background-image', 'url('+tArtwork+')')
 
   # Sort out flex-box positioning.
   $(domEl).parent('div').css('order', '7')

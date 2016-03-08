@@ -32,17 +32,22 @@ return filename
 ------------------------------------------------
 
 on setFileName()
-	using terms from application "iTunes"
-		tell application musicapp
-			set {aname, alname} to {artist, album} of current track
-			my encodeText(aname & "-" & alname & ".png", true, false, 2)
-		end tell
-	end using terms from
+	try
+		using terms from application "iTunes"
+			tell application musicapp
+				set {aname, alname} to {artist, album} of current track
+				my encodeText(aname & "-" & alname & ".png", true, false, 2)
+			end tell
+		end using terms from
+	on error e
+		my logEvent(e)
+		set filename to "default.png"
+	end try
 end setFileName
 
 on lastfmGrab(filename)
 	try
-		set rawXML to (do shell script "curl -m 2 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=" & quoted form of (my encodeText(aname, true, false, 1)) & "&album=" & quoted form of (my encodeText(alname, true, false, 1)) & "&api_key=" & apiKey & "'")
+		set rawXML to (do shell script "curl -s -m 2 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=" & quoted form of (my encodeText(aname, true, false, 1)) & "&album=" & quoted form of (my encodeText(alname, true, false, 1)) & "&api_key=" & apiKey & "'")
 		set AppleScript's text item delimiters to "large\">"
 		set rawXML to text item 2 of rawXML
 		set AppleScript's text item delimiters to "</image>"
@@ -53,7 +58,8 @@ on lastfmGrab(filename)
 		set filename to "default.png"
 	end try
 	try
-		do shell script "curl -o " & quoted form of (mypath & filename) & space & coverURL
+		--do shell script "curl -s -o " & quoted form of (mypath & filename) & space & coverURL
+		set filename to coverURL
 	on error e
 		my logEvent(e)
 		set filename to "default.png"

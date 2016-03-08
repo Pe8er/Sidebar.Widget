@@ -41,11 +41,9 @@ style: """
     line-height 20px
 
   .bar
-    background-color white02
-    top 2px
-    left 2px
+    background-color white1
     height 20px
-    width 100%
+    max-width 98%
     z-index 1
     position absolute
 
