@@ -88,7 +88,7 @@ update: (output, domEl) ->
   $(domEl).find('.bar').css('width', values[0])
 
   if values[0] is not "NA"
-    $(domEl).find('.wrapper').css('display', 'blocku')
+    $(domEl).find('.wrapper').css('display', 'block')
     if parseInt(values[0]) < 10
       $(domEl).find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
     else
