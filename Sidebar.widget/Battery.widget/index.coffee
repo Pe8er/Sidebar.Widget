@@ -87,15 +87,20 @@ update: (output, domEl) ->
   $(domEl).find('.time').html(values[1])
   $(domEl).find('.bar').css('width', values[0])
 
-  if parseInt(values[0]) < 10
-    $(domEl).find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
-  else
-    $(domEl).find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
+  if values[0] is not "NA"
+    $(domEl).find('.wrapper').css('display', 'blocku')
+    if parseInt(values[0]) < 10
+      $(domEl).find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
+    else
+      $(domEl).find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
 
-  if values[2] == 'charging'
-    $(domEl).find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
+    if values[2] == 'charging'
+      $(domEl).find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
+    else
+      $(domEl).find('.time').css('background', 'none')
   else
-    $(domEl).find('.time').css('background', 'none')
+    $(domEl).find('.wrapper').css('display', 'none')
+    $(domEl).parent('div').css('margin-top', '-1px')
 
   # Sort out flex-box positioning.
   $(domEl).parent('div').css('order', '6')
