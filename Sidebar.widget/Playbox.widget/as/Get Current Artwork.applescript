@@ -4,10 +4,13 @@ set apiKey to "2e8c49b69df3c1cf31aaa36b3ba1d166"
 tell application "Finder" to set mypath to POSIX path of (container of (path to me) as alias)
 set songMetaFile to (mypath & "songMeta.plist" as string)
 
-if my isMusicPlaying() is true then
-	my getSongMeta()
-	if my didSongChange() is true then my coverURLGrab()
-	my readSongMeta("coverURL")
+if isMusicPlaying() is true then
+	getSongMeta()
+	if didCoverChange() is true then
+		writeSongMeta({"artistName" & "##" & artistName, "albumName" & "##" & albumName, "songName" & "##" & songName})
+		coverURLGrab()
+	end if
+	readSongMeta("coverURL")
 else
 	return "NA"
 end if
@@ -20,19 +23,16 @@ end if
 
 on isMusicPlaying()
 	set apps to {"iTunes", "Spotify"}
-	set musicapp to {}
-	set myResult to false
-	repeat with i in apps
-		tell application "System Events" to set state to (name of processes) contains i
-		if state is true then
+	set answer to false
+	repeat with anApp in apps
+		tell application "System Events" to set isRunning to (name of processes) contains anApp
+		if isRunning is true then
 			try
 				using terms from application "iTunes"
-					tell application i
+					tell application anApp
 						if player state is playing then
-							set musicapp to (i as string)
-							set myResult to true
-						else
-							set myResult to false
+							set musicapp to (anApp as string)
+							set answer to true
 						end if
 					end tell
 				end using terms from
@@ -41,7 +41,7 @@ on isMusicPlaying()
 			end try
 		end if
 	end repeat
-	return myResult
+	return answer
 end isMusicPlaying
 
 on getSongMeta()
@@ -54,71 +54,56 @@ on getSongMeta()
 	end try
 end getSongMeta
 
-on didSongChange()
+on didCoverChange()
+	set answer to false
 	try
 		set currentSongMeta to artistName & songName
-		set savedSongMeta to my readSongMeta("artistName") & my readSongMeta("songName")
+		set savedSongMeta to readSongMeta("artistName") & readSongMeta("songName")
 		if currentSongMeta is not savedSongMeta then
-			set currentSongMeta to artistName & "_" & albumName
-			set savedSongMeta to (my readSongMeta("artistName")) & "_" & (my readSongMeta("albumName"))
-			if currentSongMeta is not savedSongMeta then
-				set myResult to true
-			else
-				if my readSongMeta("coverURL") is "" then
-					set myResult to true
-				else
-					set myResult to false
-				end if
-			end if
-			set keys to {"artistName" & "##" & artistName, "albumName" & "##" & albumName, "songName" & "##" & songName}
-			my writeSongMeta(songMetaFile, keys)
-		else
-			if my readSongMeta("coverURL") is "" then
-				set myResult to true
-			else
-				set myResult to false
-			end if
+			set currentSongMeta to artistName & albumName
+			set savedSongMeta to readSongMeta("artistName") & readSongMeta("albumName")
+			if currentSongMeta is not savedSongMeta then set answer to true
 		end if
-		return myResult
+		
+		if readSongMeta("coverURL") is "NA" then set answer to true
+		
 	on error e
 		my logEvent(e)
 	end try
-end didSongChange
+	return answer
+end didCoverChange
 
 on coverURLGrab()
+	set coverDownloaded to false
+	set rawXML to ""
+	set currentCoverURL to "NA"
 	repeat 5 times
 		try
 			set rawXML to (do shell script "curl 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=" & quoted form of (my encodeText(artistName, true, false, 1)) & "&album=" & quoted form of (my encodeText(albumName, true, false, 1)) & "&api_key=" & apiKey & "'")
-			delay 2
-			set AppleScript's text item delimiters to "large\">"
+			delay 1
+		on error e
+			my logEvent(e & return & rawXML)
+		end try
+		if rawXML is not "" then
 			try
+				set AppleScript's text item delimiters to "large\">"
 				set processingXML to text item 2 of rawXML
 				set AppleScript's text item delimiters to "</image>"
 				set currentCoverURL to text item 1 of processingXML
 				set AppleScript's text item delimiters to ""
 				if currentCoverURL is "" then
-					my logEvent(rawXML)
-					set currentCoverURL to "NA"
+					my logEvent("Cover art unavailable." & return & rawXML)
 				end if
-				set coverDownloaded to true
 			on error e
 				my logEvent(e & return & rawXML)
-				set currentCoverURL to "NA"
-				set coverDownloaded to true
 			end try
-		on error e
-			my logEvent(e & return & rawXML)
-			set currentCoverURL to "NA"
-			set coverDownloaded to false
-		end try
+							set coverDownloaded to true
+		end if
 		if coverDownloaded is true then exit repeat
 	end repeat
 	
-	set keys to {"coverURL" & "##" & currentCoverURL}
 	set savedCoverURL to my readSongMeta("coverURL")
-	if savedCoverURL is not currentCoverURL then
-		my writeSongMeta(songMetaFile, keys)
-	end if
+	if savedCoverURL is not currentCoverURL then writeSongMeta({"coverURL" & "##" & currentCoverURL})
 end coverURLGrab
 
 on readSongMeta(keyName)
@@ -127,15 +112,14 @@ on readSongMeta(keyName)
 			value of property list item keyName
 		on error e
 			my logEvent(e)
-			my writeSongMeta(songMetaFile, {keyName & "##" & "NA"})
+			my writeSongMeta({keyName & "##" & "NA"})
 			value of property list item keyName
 		end try
 	end tell
 end readSongMeta
 
-on writeSongMeta(songMetaFile, keys)
+on writeSongMeta(keys)
 	tell application "System Events"
-		
 		if my checkFile(songMetaFile) is false then
 			-- create an empty property list dictionary item
 			set the parent_dictionary to make new property list item with properties {kind:record}
@@ -143,7 +127,6 @@ on writeSongMeta(songMetaFile, keys)
 			set this_plistfile to Â
 				make new property list file with properties {contents:parent_dictionary, name:songMetaFile}
 		end if
-		
 		try
 			repeat with aKey in keys
 				set AppleScript's text item delimiters to "##"
