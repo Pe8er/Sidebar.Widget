@@ -15,6 +15,7 @@ style: """
   width 176px
   overflow hidden
   white-space nowrap
+  opacity 0
 
   *, *:before, *:after
     box-sizing border-box
@@ -84,11 +85,11 @@ update: (output, domEl) ->
 
   # Initialize our HTML.
   batteryHTML = ''
-  $(domEl).find('.time').html(values[1])
   $(domEl).find('.bar').css('width', values[0])
+  $(domEl).find('.time').html(values[1])
 
-  if values[0] is not "NA"
-    $(domEl).find('.wrapper').css('display', 'block')
+  if values[0] != "NA"
+    $(domEl).animate({ opacity: 1 }, 250)
     if parseInt(values[0]) < 10
       $(domEl).find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
     else
@@ -99,7 +100,7 @@ update: (output, domEl) ->
     else
       $(domEl).find('.time').css('background', 'none')
   else
-    $(domEl).find('.wrapper').css('display', 'none')
+    $(domEl).animate({ opacity: 0 }, 250)
     $(domEl).parent('div').css('margin-top', '-1px')
 
   # Sort out flex-box positioning.

@@ -97,7 +97,7 @@ on coverURLGrab()
 			on error e
 				my logEvent(e & return & rawXML)
 			end try
-							set coverDownloaded to true
+			set coverDownloaded to true
 		end if
 		if coverDownloaded is true then exit repeat
 	end repeat
