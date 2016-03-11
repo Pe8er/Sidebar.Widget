@@ -1,87 +1,27 @@
-global musicapp, mypath, aname, alname, apiKey, filename
-set musicapp to my appCheck()
-set apiKey to "2e8c49b69df3c1cf31aaa36b3ba1d166"
-set filename to "default.png"
-tell application "Finder" to set mypath to POSIX path of (container of (path to me) as alias)
+global musicapp, artistName, songName, albumName, apiKey, songMetaFile
 
-if musicapp is "iTunes" then
-	tell application "iTunes"
-		set filename to my setFileName()
-		if my checkFile(filename) is false then
-			if (count of artwork of current track) > 0 then
-				set coverTarget to open for access (text 1 thru -32 of (path to me as text) & filename as text) with write permission
-				set coverData to data of artwork 1 of current track
-				write coverData to coverTarget
-				close access coverTarget
-			else
-				set filename to my lastfmGrab(filename)
-			end if
-		end if
-	end tell
-	
-else if musicapp is "Spotify" then
-	tell application "Spotify" to set filename to my setFileName()
-	if my checkFile(filename) is false then set filename to my lastfmGrab(filename)
+set apiKey to "2e8c49b69df3c1cf31aaa36b3ba1d166"
+tell application "Finder" to set mypath to POSIX path of (container of (path to me) as alias)
+set songMetaFile to (mypath & "songMeta.plist" as string)
+
+if my isMusicPlaying() is true then
+	my getSongMeta()
+	if my didSongChange() is true then my coverURLGrab()
+	my readSongMeta("coverURL")
+else
+	return "NA"
 end if
 
-if filename is "" then set filename to "default.png"
-return filename
+
 
 ------------------------------------------------
 ---------------SUBROUTINES GALORE---------------
 ------------------------------------------------
 
-on setFileName()
-	try
-		using terms from application "iTunes"
-			tell application musicapp
-				set {aname, alname} to {artist, album} of current track
-				my encodeText(aname & "-" & alname & ".png", true, false, 2)
-			end tell
-		end using terms from
-	on error e
-		my logEvent(e)
-		set filename to "default.png"
-	end try
-end setFileName
-
-on lastfmGrab(filename)
-	try
-		set rawXML to (do shell script "curl -s -m 2 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=" & quoted form of (my encodeText(aname, true, false, 1)) & "&album=" & quoted form of (my encodeText(alname, true, false, 1)) & "&api_key=" & apiKey & "'")
-		set AppleScript's text item delimiters to "large\">"
-		set rawXML to text item 2 of rawXML
-		set AppleScript's text item delimiters to "</image>"
-		set coverURL to text item 1 of rawXML
-		set AppleScript's text item delimiters to ""
-	on error e
-		my logEvent(e)
-		set filename to "default.png"
-	end try
-	try
-		--do shell script "curl -s -o " & quoted form of (mypath & filename) & space & coverURL
-		set filename to coverURL
-	on error e
-		my logEvent(e)
-		set filename to "default.png"
-	end try
-end lastfmGrab
-
-on deleteoldcovers(filename)
-	do shell script "find '" & mypath & "' -name '*.png' ! -name 'default*' ! -name " & quoted form of filename & " -exec rm {} \\;"
-end deleteoldcovers
-
-on checkFile(filename)
-	tell application "Finder" to if (exists ({mypath & filename} as string) as POSIX file) then
-		return true
-	else
-		my deleteoldcovers(filename)
-		return false
-	end if
-end checkFile
-
-on appCheck()
+on isMusicPlaying()
 	set apps to {"iTunes", "Spotify"}
-	set activeApp to {}
+	set musicapp to {}
+	set myResult to false
 	repeat with i in apps
 		tell application "System Events" to set state to (name of processes) contains i
 		if state is true then
@@ -89,8 +29,10 @@ on appCheck()
 				using terms from application "iTunes"
 					tell application i
 						if player state is playing then
-							set activeApp to (i as string)
-							exit repeat
+							set musicapp to (i as string)
+							set myResult to true
+						else
+							set myResult to false
 						end if
 					end tell
 				end using terms from
@@ -99,8 +41,123 @@ on appCheck()
 			end try
 		end if
 	end repeat
-	return activeApp
-end appCheck
+	return myResult
+end isMusicPlaying
+
+on getSongMeta()
+	try
+		using terms from application "iTunes"
+			tell application musicapp to set {artistName, songName, albumName} to {artist, name, album} of current track
+		end using terms from
+	on error e
+		my logEvent(e)
+	end try
+end getSongMeta
+
+on didSongChange()
+	try
+		set currentSongMeta to artistName & songName
+		set savedSongMeta to my readSongMeta("artistName") & my readSongMeta("songName")
+		if currentSongMeta is not savedSongMeta then
+			set currentSongMeta to artistName & "_" & albumName
+			set savedSongMeta to (my readSongMeta("artistName")) & "_" & (my readSongMeta("albumName"))
+			if currentSongMeta is not savedSongMeta then
+				set myResult to true
+			else
+				if my readSongMeta("coverURL") is "" then
+					set myResult to true
+				else
+					set myResult to false
+				end if
+			end if
+			set keys to {"artistName" & "##" & artistName, "albumName" & "##" & albumName, "songName" & "##" & songName}
+			my writeSongMeta(songMetaFile, keys)
+		else
+			if my readSongMeta("coverURL") is "" then
+				set myResult to true
+			else
+				set myResult to false
+			end if
+		end if
+		return myResult
+	on error e
+		my logEvent(e)
+	end try
+end didSongChange
+
+on coverURLGrab()
+	repeat 5 times
+		try
+			set rawXML to (do shell script "curl 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&artist=" & quoted form of (my encodeText(artistName, true, false, 1)) & "&album=" & quoted form of (my encodeText(albumName, true, false, 1)) & "&api_key=" & apiKey & "'")
+			delay 2
+			set AppleScript's text item delimiters to "large\">"
+			try
+				set processingXML to text item 2 of rawXML
+				set AppleScript's text item delimiters to "</image>"
+				set currentCoverURL to text item 1 of processingXML
+				set AppleScript's text item delimiters to ""
+				if currentCoverURL is "" then
+					my logEvent(rawXML)
+					set currentCoverURL to "NA"
+				end if
+				set coverDownloaded to true
+			on error e
+				my logEvent(e & return & rawXML)
+				set currentCoverURL to "NA"
+				set coverDownloaded to true
+			end try
+		on error e
+			my logEvent(e & return & rawXML)
+			set currentCoverURL to "NA"
+			set coverDownloaded to false
+		end try
+		if coverDownloaded is true then exit repeat
+	end repeat
+	
+	set keys to {"coverURL" & "##" & currentCoverURL}
+	set savedCoverURL to my readSongMeta("coverURL")
+	if savedCoverURL is not currentCoverURL then
+		my writeSongMeta(songMetaFile, keys)
+	end if
+end coverURLGrab
+
+on readSongMeta(keyName)
+	tell application "System Events" to tell property list file songMetaFile to tell contents
+		try
+			value of property list item keyName
+		on error e
+			my logEvent(e)
+			my writeSongMeta(songMetaFile, {keyName & "##" & "NA"})
+			value of property list item keyName
+		end try
+	end tell
+end readSongMeta
+
+on writeSongMeta(songMetaFile, keys)
+	tell application "System Events"
+		
+		if my checkFile(songMetaFile) is false then
+			-- create an empty property list dictionary item
+			set the parent_dictionary to make new property list item with properties {kind:record}
+			-- create new property list file using the empty dictionary list item as contents
+			set this_plistfile to Â
+				make new property list file with properties {contents:parent_dictionary, name:songMetaFile}
+		end if
+		
+		try
+			repeat with aKey in keys
+				set AppleScript's text item delimiters to "##"
+				set keyName to text item 1 of aKey
+				set keyValue to text item 2 of aKey
+				set AppleScript's text item delimiters to ""
+				make new property list item at end of property list items of contents of property list file songMetaFile Â
+					with properties {kind:string, name:keyName, value:keyValue}
+			end repeat
+		on error e
+			my logEvent(e)
+		end try
+	end tell
+end writeSongMeta
 
 on encodeText(this_text, encode_URL_A, encode_URL_B, method)
 	--http://www.macosxautomation.com/applescript/sbrt/sbrt-08.html
@@ -134,5 +191,13 @@ on encode_char(this_char, method)
 end encode_char
 
 on logEvent(e)
-	do shell script "echo '" & (current date) & ": Found " & e & "' >> ~/Library/Logs/Playbox-Widget.log"
+	do shell script "echo '" & (current date) & space & e & "' >> ~/Library/Logs/Playbox-Widget.log"
 end logEvent
+
+on checkFile(myfile)
+	tell application "Finder" to if (exists (myfile as string) as POSIX file) then
+		return true
+	else
+		return false
+	end if
+end checkFile

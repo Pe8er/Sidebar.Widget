@@ -116,10 +116,10 @@ update: (output, domEl) ->
     $(domEl).find('.album').html(values[2])
     $(domEl).find('.progress').css width: tCurrent
     if tArtwork isnt currArt
-      if values[6] =='Spotify'
-        $(domEl).find('.art').css('background-image', 'url('+tArtwork+')')
+      if tArtwork =='NA'
+        $(domEl).find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/default.png)')
       else
-        $(domEl).find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/'+tArtwork+')')
+        $(domEl).find('.art').css('background-image', 'url('+tArtwork+')')
 
   # Sort out flex-box positioning.
   $(domEl).parent('div').css('order', '7')
