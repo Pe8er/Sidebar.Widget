@@ -2,7 +2,7 @@
 # I stole from so many I can't remember who you are, thank you so much everyone!
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 
-command: "sh 'Sidebar.widget/Playbox.widget/playbox.sh'"
+command: "osascript 'Sidebar.widget/Playbox.widget/as/Get Current Track.applescript'"
 
 refreshFrequency: '1s'
 
@@ -68,8 +68,7 @@ render: (output) ->
   # Progress bar things.
   tDuration = values[4]
   tPosition = values[5]
-  player = values[6]
-  tArtwork = values[7]
+  tArtwork = values[6]
 
   # Create the DIVs for each piece of data.
   medianowHTML = "
@@ -100,8 +99,7 @@ update: (output, domEl) ->
   # Progress bar things.
   tDuration = values[4]
   tPosition = values[5]
-  player = values[6]
-  tArtwork = values[7]
+  tArtwork = values[6]
   tWidth = $(domEl).width();
   tCurrent = (tPosition / tDuration) * tWidth
 

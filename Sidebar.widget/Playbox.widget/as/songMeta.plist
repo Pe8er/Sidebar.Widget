@@ -3,12 +3,18 @@
 <plist version="1.0">
 <dict>
 	<key>albumName</key>
-	<string>Stacked Up</string>
+	<string>More Music For The Jilted Generation (Remastered)</string>
 	<key>artistName</key>
-	<string>Senser</string>
+	<string>The Prodigy</string>
 	<key>coverURL</key>
-	<string>http://img2-ak.lst.fm/i/u/174s/d266767fca8c4f4188b8a9d48b62ecbb.png</string>
+	<string>http://img2-ak.lst.fm/i/u/174s/d000d5e76cf94de6cdc7f93df9fe6176.png</string>
+	<key>currentPosition</key>
+	<string>0591</string>
+	<key>songDuration</key>
+	<string>299666</string>
 	<key>songName</key>
-	<string>One Touch One Bounce</string>
+	<string>Break &amp; Enter (2005 Live Edit)</string>
+	<key>songRating</key>
+	<string>★☆☆☆☆</string>
 </dict>
 </plist>
