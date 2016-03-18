@@ -71,5 +71,5 @@ update: (output, domEl) ->
   div.html("<div class='wrapper'>" + timeHTML + "</div>")
 
   # Sort out flex-box positioning.
-  $(domEl).parent('div').css('order', '3')
-  $(domEl).parent('div').css('flex', '0 1 auto')
+  div.parent('div').css('order', '3')
+  div.parent('div').css('flex', '0 1 auto')

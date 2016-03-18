@@ -52,19 +52,16 @@ style: """
 
 render: (output) ->
 
-  # Get our pieces.
-  values = output.split("^")
-
   # Initialize our HTML.
   NextEventHTML = ''
 
   # Create the DIVs for each piece of data.
   NextEventHTML = "
     <div class='wrapper'>
-      <div class='time'>" + values[0] + "</div>
+      <div class='time'></div>
       <div class='text'>
-        <span class='eventName'>" + values[1] + "</span>
-        <span class='meta'>" + values[2] + "</span>
+        <span class='eventName'></span>
+        <span class='meta'></span>
       </div>
     </div>"
   return NextEventHTML
@@ -80,21 +77,21 @@ update: (output, domEl) ->
 
   # Initialize main HTML.
   NextEventHTML = ''
-  $(domEl).find('.time').html(values[0])
-  $(domEl).find('.eventName').html(values[1])
-  $(domEl).find('.meta').html(values[2])
+  div.find('.time').html(values[0])
+  div.find('.eventName').html(values[1])
+  div.find('.meta').html(values[2])
 
   if values[0] == 'No Events'
-    $(domEl).find('.wrapper').css('display', 'none')
-    $(domEl).parent('div').css('margin-top', '-1px')
+    div.find('.wrapper').css('display', 'none')
+    div.parent('div').css('margin-top', '-1px')
   else
-    $(domEl).find('.wrapper').css('display', 'block')
+    div.find('.wrapper').css('display', 'block')
 
   if parseInt(values[2]) != 0
-    $(domEl).find('.meta').css('display', 'block')
+    div.find('.meta').css('display', 'block')
   else
-    $(domEl).find('.meta').css('display', 'none')
+    div.find('.meta').css('display', 'none')
 
   # Sort out flex-box positioning.
-  $(domEl).parent('div').css('order', '2')
-  $(domEl).parent('div').css('flex', '0 1 auto')
+  div.parent('div').css('order', '2')
+  div.parent('div').css('flex', '0 1 auto')

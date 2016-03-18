@@ -44,9 +44,6 @@ style: """
 
 render: (output) ->
 
-  # Get our pieces.
-  values = output.split(" ")
-
   # Initialize our HTML.
   elapsedHTML = ''
 

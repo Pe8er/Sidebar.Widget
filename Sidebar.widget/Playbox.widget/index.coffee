@@ -58,26 +58,17 @@ style: """
 """
 
 render: (output) ->
-
-  # Get our pieces.
-  values = output.split(" ~ ")
-
   # Initialize our HTML.
   medianowHTML = ''
-
-  # Progress bar things.
-  tDuration = values[4]
-  tPosition = values[5]
-  tArtwork = values[6]
 
   # Create the DIVs for each piece of data.
   medianowHTML = "
     <div class='wrapper'>
       <div class='art'></div>
       <div class='text'>
-        <div class='song'>" + values[1] + "</div>
-        <div class='artist'>" + values[0] + "</div>
-        <div class='album'>" + values[2]+ "</div>
+        <div class='song'></div>
+        <div class='artist'></div>
+        <div class='album'></div>
       </div>
       <div class='progress'></div>
     </div>"
@@ -100,25 +91,25 @@ update: (output, domEl) ->
   tDuration = values[4]
   tPosition = values[5]
   tArtwork = values[6]
-  tWidth = $(domEl).width();
+  tWidth = div.width();
   tCurrent = (tPosition / tDuration) * tWidth
 
-  currArt = $(domEl).find('.art').css('background-image').split('/').pop().slice(0,-1)
+  currArt = div.find('.art').css('background-image').split('/').pop().slice(0,-1)
 
   if values[0] == 'NA'
-    $(domEl).animate({ opacity: 0 }, 250)
+    div.animate({ opacity: 0 }, 250)
   else
-    $(domEl).animate({ opacity: 1 }, 250)
-    $(domEl).find('.song').html(values[1])
-    $(domEl).find('.artist').html(values[0])
-    $(domEl).find('.album').html(values[2])
-    $(domEl).find('.progress').css width: tCurrent
+    div.animate({ opacity: 1 }, 250)
+    div.find('.song').html(values[1])
+    div.find('.artist').html(values[0])
+    div.find('.album').html(values[2])
+    div.find('.progress').css width: tCurrent
     if tArtwork isnt currArt
       if tArtwork =='NA'
-        $(domEl).find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/default.png)')
+        div.find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/default.png)')
       else
-        $(domEl).find('.art').css('background-image', 'url('+tArtwork+')')
+        div.find('.art').css('background-image', 'url('+tArtwork+')')
 
   # Sort out flex-box positioning.
-  $(domEl).parent('div').css('order', '7')
-  $(domEl).parent('div').css('flex', '0 1 auto')
+  div.parent('div').css('order', '7')
+  div.parent('div').css('flex', '0 1 auto')

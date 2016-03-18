@@ -5,24 +5,20 @@
 
 options =
   city          : "San Francisco"   # default city in case location detection fails
-  region        : "CA"              # default region in case location detection fails
+  region        : "US"              # default region in case location detection fails
   units         : 'c'               # c for celcius. f for Fahrenheit
   staticLocation: false             # set to true to disable automatic location lookup
 
 appearance =
   iconSet       : 'original'        # "original" for the original icons
 
-refreshFrequency: '10m'            # Update every 10 minutes
+refreshFrequency: '10m'             # Update every 10 minutes
 
 style: """
   white1 = rgba(white,1)
   white05 = rgba(white,0.5)
-  white02 = rgba(white,0.2)
-  black02 = rgba(black,0.2)
   icon-size = 28px
 
-  //bottom 220px + 49
-  //right 0px
   overflow hidden
 
   @font-face
@@ -86,7 +82,7 @@ command: "#{process.argv[0]} Sidebar.widget/WeatherNow.widget/get-weather \
 appearance: appearance
 
 render: -> """
-  <div class='current'>
+  <div class='current #{@appearance.iconSet}'>
     <div class='icon'></div>
     <div class='wrapper'>
       <div class='temperature'></div>
@@ -100,7 +96,7 @@ update: (output, domEl) ->
   @$domEl = $(domEl)
 
   data    = JSON.parse(output)
-  channel = data?.query?.results?.weather?.rss?.channel
+  channel = data?.query?.results?.channel
   return @renderError(data) unless channel
 
   if channel.title == "Yahoo! Weather - Error"
@@ -178,11 +174,19 @@ parseTime: (usTimeString) ->
   hour: hour, minute: minute
 
 getIcon: (code, iconSet, dayOrNight) ->
-  @getOriginalIcon(code)
+  if iconSet is 'yahoo'
+    @getYahooIcon(code, dayOrNight)
+  else
+    @getOriginalIcon(code)
 
 getOriginalIcon: (code) ->
   return @iconMapping['unknown'] unless code
   @iconMapping[code]
+
+getYahooIcon: (code, dayOrNight) ->
+  # Returns the image element from Yahoo with the proper image
+  imageURL = "http://l.yimg.com/a/i/us/nws/weather/gr/#{code}#{dayOrNight}.png"
+  '<img src="' + imageURL + '">'
 
 dayMapping:
   0: 'Sunday'

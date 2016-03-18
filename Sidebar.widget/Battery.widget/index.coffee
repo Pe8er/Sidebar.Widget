@@ -24,13 +24,14 @@ style: """
     font-size 8pt
     line-height 11pt
     color white
-    padding 2px
-    height 24px
-    opacity: 1
+    margin 2px
+    height 20px
+    opacity 1
+    position relative
 
   .box
     width 100%
-    position relative
+    position absolute
     z-index 2
     text-align center
     color white05
@@ -44,9 +45,12 @@ style: """
   .bar
     background-color white1
     height 20px
-    max-width 98%
+    min-width 1%
+    max-width 100%
     z-index 1
     position absolute
+    top 0
+    left 0
 
   .time
     display block
@@ -58,9 +62,6 @@ style: """
 """
 
 render: (output) ->
-  # Get our pieces
-  values = output.split(" ")
-
   # Initialize our HTML.
   batteryHTML = ''
 
@@ -69,7 +70,7 @@ render: (output) ->
     <div class='wrapper'>
       <div class='bar'></div>
       <div class='box'>
-        <span class='time'>" + values[1] + "</span>
+        <span class='time'>No Data</span>
       </div>
      </div>"
   return batteryHTML
@@ -85,24 +86,24 @@ update: (output, domEl) ->
 
   # Initialize our HTML.
   batteryHTML = ''
-  $(domEl).find('.bar').css('width', values[0])
-  $(domEl).find('.time').html(values[1])
+  div.find('.bar').css('width', values[0])
+  div.find('.time').html(values[1])
 
   if values[0] != "NA"
-    $(domEl).animate({ opacity: 1 }, 250)
+    div.animate({ opacity: 1 }, 250)
     if parseInt(values[0]) < 10
-      $(domEl).find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
+      div.find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
     else
-      $(domEl).find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
+      div.find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
 
     if values[2] == 'charging'
-      $(domEl).find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
+      div.find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
     else
-      $(domEl).find('.time').css('background', 'none')
+      div.find('.time').css('background', 'none')
   else
-    $(domEl).animate({ opacity: 0 }, 250)
-    $(domEl).parent('div').css('margin-top', '-1px')
+    div.animate({ opacity: 0 }, 250)
+    div.parent('div').css('margin-top', '-1px')
 
   # Sort out flex-box positioning.
-  $(domEl).parent('div').css('order', '6')
-  $(domEl).parent('div').css('flex', '0 1 auto')
+  div.parent('div').css('order', '6')
+  div.parent('div').css('flex', '0 1 auto')
