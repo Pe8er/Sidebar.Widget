@@ -2,7 +2,10 @@
 # I stole from so many I can't remember who you are, thank you so much everyone!
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 
-command: "osascript 'Sidebar.widget/Time Elapsed.widget/Time Elapsed.applescript'"
+options =
+  theDate: "10/29/2012"
+
+command: "osascript 'Sidebar.widget/Time Elapsed.widget/Time Elapsed.applescript' \"#{options.theDate}\""
 
 refreshFrequency: '1h'
 
@@ -47,6 +50,9 @@ render: (output) ->
   # Initialize our HTML.
   elapsedHTML = ''
 
+  # Get our pieces.
+  values = output.slice(0,-1).split(" ")
+
   # Create the DIVs for each piece of data.
   elapsedHTML = "
     <div class='wrapper'>
@@ -78,5 +84,5 @@ update: (output, domEl) ->
   elapsedHTML = ''
 
   # Sort out flex-box positioning.
-  $(domEl).parent('div').css('order', '4')
-  $(domEl).parent('div').css('flex', '0 1 auto')
+  div.parent('div').css('order', '4')
+  div.parent('div').css('flex', '0 1 auto')
