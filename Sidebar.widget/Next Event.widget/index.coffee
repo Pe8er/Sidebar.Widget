@@ -13,7 +13,7 @@ style: """
   width 176px
 
   .wrapper
-    position: relative
+    position relative
     font-size 8pt
     line-height 11pt
     color white
@@ -38,6 +38,7 @@ style: """
     margin-right 8px
     text-align left
     overflow hidden
+    height auto
 
   .eventName, .meta
     display block
