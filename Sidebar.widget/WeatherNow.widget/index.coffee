@@ -6,7 +6,7 @@
 options =
   city          : "San Francisco"   # default city in case location detection fails
   region        : "US"              # default region in case location detection fails
-  units         : 'c'               # c for celcius. f for Fahrenheit
+  units         : 'C'               # c for celcius. f for Fahrenheit
   staticLocation: false             # set to true to disable automatic location lookup
 
 appearance =
