@@ -8,10 +8,8 @@ refreshFrequency: '1s'
 
 style: """
 
-  white1 = rgba(white,1)
   white05 = rgba(white,0.5)
   white02 = rgba(white,0.2)
-  black02 = rgba(black,0.2)
 
   width 176px
   overflow hidden
@@ -40,7 +38,7 @@ style: """
   .progress
     width: @width
     height: 2px
-    background: white1
+    background: white
     position: absolute
     bottom: 0
     left: 0
@@ -87,6 +85,8 @@ update: (output, domEl) ->
   # Initialize our HTML.
   medianowHTML = ''
 
+
+
   # Progress bar things.
   tDuration = values[4]
   tPosition = values[5]
@@ -109,6 +109,7 @@ update: (output, domEl) ->
         div.find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/default.png)')
       else
         div.find('.art').css('background-image', 'url('+tArtwork+')')
+
 
   # Sort out flex-box positioning.
   div.parent('div').css('order', '7')
