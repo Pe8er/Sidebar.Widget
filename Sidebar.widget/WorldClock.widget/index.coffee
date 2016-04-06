@@ -1,20 +1,22 @@
 # Code originally created by Chris Johnson.
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 
-command: "Sidebar.widget/WorldClock.widget/WorldClock.sh"
+options =
+
+  # Enter locations to set up world clocks.
+  locations           :           "US/Pacific,Europe/Warsaw"
+
+  # Optional custom labels for cities. If you leave them out, make sure to keep the quotes ("").
+  cityNames           :           "Cupertino,Wroclaw"
+
+  # 12 or 24 hour time format.
+  timeFormat          :         "12"
+
+command: "osascript Sidebar.widget/WorldClock.widget/WorldClock.applescript '#{options.locations}' '#{options.cityNames}' #{options.timeFormat}"
 
 refreshFrequency: '1s'
 
 style: """
-  white1 = rgba(white,1)
-  white05 = rgba(white,0.5)
-  white02 = rgba(white,0.2)
-  black02 = rgba(black,0.2)
-
-  white-space nowrap
-  text-overflow ellipsis
-  overflow hidden
-
   .wrapper
     text-align center
     font-size 8pt
@@ -22,18 +24,23 @@ style: """
     width 176px
     align-items center
     display flex
-    padding 8px 0
 
   .box
-    width: 50%
-    float left
+    width auto
+    max-width 50%
+    margin 0 auto
+    padding 8px
+    overflow hidden
 
   .time
     color white
     font-weight 700
 
   .timezone
-    color: white05
+    color: rgba(white,0.5)
+    white-space nowrap
+    overflow hidden
+    text-overflow ellipsis
 
 """
 
@@ -47,7 +54,7 @@ update: (output, domEl) ->
   div = $(domEl)
 
   # Get our timezones and times.
-  zones=output.split("\n")
+  zones=output.split(";")
 
   # Initialize our HTML.
   timeHTML = ''
@@ -59,7 +66,7 @@ update: (output, domEl) ->
     if zone != ''
 
       # Split the timezone from the time.
-      values = zone.split(";")
+      values = zone.split("~")
 
       # Create the DIVs for each timezone/time. The last item is unique in that we don't want to display the border.
       # if idx < zones.length - 2
@@ -69,6 +76,7 @@ update: (output, domEl) ->
 
   # Set the HTML of our main DIV.
   div.html("<div class='wrapper'>" + timeHTML + "</div>")
+  # div.html("<div class='wrapper'>" + output + "</div>")
 
   # Sort out flex-box positioning.
   div.parent('div').css('order', '3')
