@@ -2,6 +2,10 @@
 # I stole from so many I can't remember who you are, thank you so much everyone!
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 
+options =
+  # Easily enable or disable the widget.
+  widgetEnable: true
+
 command: "osascript 'Sidebar.widget/Battery.widget/battery.applescript'"
 
 refreshFrequency: '10s'
@@ -61,6 +65,8 @@ style: """
     margin 0 auto
 """
 
+options : options
+
 render: (output) ->
   # Initialize our HTML.
   batteryHTML = ''
@@ -81,29 +87,32 @@ update: (output, domEl) ->
   # Get our main DIV.
   div = $(domEl)
 
-  # Get our pieces.
-  values = output.slice(0,-1).split(" ")
+  if @options.widgetEnable
+    # Get our pieces.
+    values = output.slice(0,-1).split(" ")
 
-  # Initialize our HTML.
-  batteryHTML = ''
-  div.find('.bar').css('width', values[0])
-  div.find('.time').html(values[1])
+    # Initialize our HTML.
+    batteryHTML = ''
+    div.find('.bar').css('width', values[0])
+    div.find('.time').html(values[1])
 
-  if values[0] != "NA"
-    div.animate({ opacity: 1 }, 250)
-    if parseInt(values[0]) < 10
-      div.find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
+    if values[0] != "NA"
+      div.animate({ opacity: 1 }, 250)
+      if parseInt(values[0]) < 10
+        div.find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
+      else
+        div.find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
+
+      if values[2] == 'charging'
+        div.find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
+      else
+        div.find('.time').css('background', 'none')
     else
-      div.find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
+      div.animate({ opacity: 0 }, 250)
+      div.parent('div').css('margin-top', '-1px')
 
-    if values[2] == 'charging'
-      div.find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
-    else
-      div.find('.time').css('background', 'none')
+    # Sort out flex-box positioning.
+    div.parent('div').css('order', '6')
+    div.parent('div').css('flex', '0 1 auto')
   else
-    div.animate({ opacity: 0 }, 250)
-    div.parent('div').css('margin-top', '-1px')
-
-  # Sort out flex-box positioning.
-  div.parent('div').css('order', '6')
-  div.parent('div').css('flex', '0 1 auto')
+    div.hide()

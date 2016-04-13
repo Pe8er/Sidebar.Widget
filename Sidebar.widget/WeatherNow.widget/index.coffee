@@ -4,10 +4,11 @@
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 
 options =
+  widgetEnable  : true              # Easily enable or disable the widget.
   city          : "San Francisco"   # default city in case location detection fails
   region        : "US"              # default region in case location detection fails
   units         : 'C'               # c for celcius. f for Fahrenheit
-  staticLocation: true             # set to true to disable automatic location lookup
+  staticLocation: false             # set to true to disable automatic location lookup
 
 appearance =
   iconSet       : 'original'        # "original" for the original icons
@@ -80,6 +81,7 @@ command: "#{process.argv[0]} Sidebar.widget/WeatherNow.widget/get-weather \
                             #{'static' if options.staticLocation}"
 
 appearance: appearance
+options : options
 
 render: -> """
   <div class='current #{@appearance.iconSet}'>
@@ -95,21 +97,24 @@ render: -> """
 update: (output, domEl) ->
   @$domEl = $(domEl)
 
-  data    = JSON.parse(output)
-  channel = data?.query?.results?.channel
-  return @renderError(data) unless channel
+  if @options.widgetEnable
+    data    = JSON.parse(output)
+    channel = data?.query?.results?.channel
+    return @renderError(data) unless channel
 
-  if channel.title == "Yahoo! Weather - Error"
-    return @renderError(data, channel.item?.title)
+    if channel.title == "Yahoo! Weather - Error"
+      return @renderError(data, channel.item?.title)
 
-  @renderCurrent channel
+    @renderCurrent channel
 
-  @$domEl.find('.error').remove()
-  @$domEl.children().show()
+    @$domEl.find('.error').remove()
+    @$domEl.children().show()
 
-  # Sort out flex-box positioning.
-  $(domEl).parent('div').css('order', '5')
-  $(domEl).parent('div').css('flex', '0 1 auto')
+    # Sort out flex-box positioning.
+    $(domEl).parent('div').css('order', '5')
+    $(domEl).parent('div').css('flex', '0 1 auto')
+  else
+    @$domEl.hide()
 
 renderCurrent: (channel) ->
   weather  = channel.item

@@ -1,6 +1,10 @@
 # Code originally created by Adam Vaughan (https://github.com/adamvaughan)
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 
+options =
+  # Easily enable or disable the widget.
+  widgetEnable: true
+
 sundayFirstCalendar = 'cal && date "+%-m %-d %y"'
 
 mondayFirstCalendar =  'cal | awk \'{ print " "$0; getline; print "Mo Tu We Th Fr Sa Su"; \
@@ -68,6 +72,8 @@ style: """
     color: white05
 """
 
+options : options
+
 render: -> """
   <div class='wrapper'>
     <table>
@@ -133,12 +139,18 @@ updateBody: (rows, table) ->
         cell.addClass("grey")
 
 update: (output, domEl) ->
-  rows = output.split("\n")
-  table = $(domEl).find("table")
 
-  @updateHeader rows, table
-  @updateBody rows, table
+  div = $(domEl)
 
-  # Sort out flex-box positioning.
-  $(domEl).parent('div').css('order', '1')
-  $(domEl).parent('div').css('flex', '0 1 auto')
+  if @options.widgetEnable
+    rows = output.split("\n")
+    table = div.find("table")
+
+    @updateHeader rows, table
+    @updateBody rows, table
+
+    # Sort out flex-box positioning.
+    div.parent('div').css('order', '1')
+    div.parent('div').css('flex', '0 1 auto')
+  else
+    div.hide()

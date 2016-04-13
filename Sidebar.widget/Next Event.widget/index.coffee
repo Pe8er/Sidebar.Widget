@@ -2,6 +2,10 @@
 # I stole from so many I can't remember who you are, thank you so much everyone!
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 
+options =
+  # Easily enable or disable the widget.
+  widgetEnable: true
+
 command: "osascript 'Sidebar.widget/Next Event.widget/Next Event.applescript'"
 
 refreshFrequency: '1m'
@@ -51,6 +55,8 @@ style: """
     color white05
 """
 
+options : options
+
 render: (output) ->
 
   # Initialize our HTML.
@@ -73,26 +79,29 @@ update: (output, domEl) ->
   # Get our main DIV.
   div = $(domEl)
 
-  # Get our pieces.
-  values = output.slice(0,-1).split("^")
+  if @options.widgetEnable
+    # Get our pieces.
+    values = output.slice(0,-1).split("^")
 
-  # Initialize main HTML.
-  NextEventHTML = ''
-  div.find('.time').html(values[0])
-  div.find('.eventName').html(values[1])
-  div.find('.meta').html(values[2])
+    # Initialize main HTML.
+    NextEventHTML = ''
+    div.find('.time').html(values[0])
+    div.find('.eventName').html(values[1])
+    div.find('.meta').html(values[2])
 
-  if values[0] == 'No Events'
-    div.find('.wrapper').css('display', 'none')
-    div.parent('div').css('margin-top', '-1px')
+    if values[0] == 'No Events'
+      div.find('.wrapper').css('display', 'none')
+      div.parent('div').css('margin-top', '-1px')
+    else
+      div.find('.wrapper').css('display', 'block')
+
+    if parseInt(values[2]) != 0
+      div.find('.meta').css('display', 'block')
+    else
+      div.find('.meta').css('display', 'none')
+
+    # Sort out flex-box positioning.
+    div.parent('div').css('order', '2')
+    div.parent('div').css('flex', '0 1 auto')
   else
-    div.find('.wrapper').css('display', 'block')
-
-  if parseInt(values[2]) != 0
-    div.find('.meta').css('display', 'block')
-  else
-    div.find('.meta').css('display', 'none')
-
-  # Sort out flex-box positioning.
-  div.parent('div').css('order', '2')
-  div.parent('div').css('flex', '0 1 auto')
+    div.hide()

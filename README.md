@@ -15,6 +15,16 @@ A multi-widget containing:
 
 It supports flex positioning, easy background blur and tons of probably very poorly written code.
 
+## Options
+
+Each widget provides an easy way to toggle its visibility. Look at the top of respective widget's `index.coffee`:
+
+```
+options =
+  # Easily enable or disable the widget.
+  widgetEnable: true
+```
+
 [See my other widgets](https://github.com/Pe8er/Ubersicht-Widgets)
 
 [Version History](https://github.com/Pe8er/Sidebar.Widget/wiki/Version-History)
@@ -22,4 +32,3 @@ It supports flex positioning, easy background blur and tons of probably very poo
 ## TODO
 
 - As always, keep cleaning up the code
-- Improve time elapsed logic

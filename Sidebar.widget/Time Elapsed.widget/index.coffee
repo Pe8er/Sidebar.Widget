@@ -3,6 +3,10 @@
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 
 options =
+  # Easily enable or disable the widget.
+  widgetEnable: true
+
+  # Set the start date to count from.
   theDate: "10/29/2012"
 
 command: "osascript 'Sidebar.widget/Time Elapsed.widget/Time Elapsed.applescript' \"#{options.theDate}\""
@@ -45,6 +49,8 @@ style: """
     color white
 """
 
+options : options
+
 render: (output) ->
 
   # Initialize our HTML.
@@ -77,12 +83,15 @@ update: (output, domEl) ->
   # Get our main DIV.
   div = $(domEl)
 
-  # Get our pieces.
-  values = output.slice(0,-1).split(" ")
+  if @options.widgetEnable
+    # Get our pieces.
+    values = output.slice(0,-1).split(" ")
 
-  # Initialize our HTML.
-  elapsedHTML = ''
+    # Initialize our HTML.
+    elapsedHTML = ''
 
-  # Sort out flex-box positioning.
-  div.parent('div').css('order', '4')
-  div.parent('div').css('flex', '0 1 auto')
+    # Sort out flex-box positioning.
+    div.parent('div').css('order', '4')
+    div.parent('div').css('flex', '0 1 auto')
+  else
+    div.hide()
