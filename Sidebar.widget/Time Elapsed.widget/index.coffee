@@ -7,7 +7,7 @@ options =
   widgetEnable: true
 
   # Set the start date to count from.
-  theDate: "10/29/2012"
+  theDate     : "10/29/2012"
 
 command: "osascript 'Sidebar.widget/Time Elapsed.widget/Time Elapsed.applescript' \"#{options.theDate}\""
 

@@ -16,8 +16,8 @@ appearance =
 refreshFrequency: '10m'             # Update every 10 minutes
 
 style: """
-  white1 = rgba(white,1)
-  white05 = rgba(white,0.5)
+  white1    = rgba(white,1)
+  white05   = rgba(white,0.5)
   icon-size = 28px
 
   overflow hidden

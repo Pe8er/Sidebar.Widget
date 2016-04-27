@@ -13,10 +13,10 @@ options =
   widgetEnable: true
 
   # Set this to true to enable previous and next month dates, or false to disable.
-  otherMonths: true
+  otherMonths : true
 
   # Specify the first day of the week (Monday or Sunday)
-  firstDay: Monday
+  firstDay    : Monday
 
 refreshFrequency: '1h'
 

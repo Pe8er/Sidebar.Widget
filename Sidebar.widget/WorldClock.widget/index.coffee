@@ -3,20 +3,20 @@
 
 options =
   # Easily enable or disable the widget.
-  widgetEnable        :           true
+  widgetEnable:           true
 
-  # Enter locations to set up world clocks.
-  locations           :           "US/Pacific,Europe/Warsaw"
+  # Enter locations to set up world clocks. Reference - en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  locations   :           "US/Pacific,Europe/Warsaw"
 
-  # Optional custom labels for cities. If you leave them out, make sure to keep the quotes ("").
-  cityNames           :           "Cupertino,Wroclaw"
+  # Optional custom labels for cities. If you leave them empty, make sure to keep the quotes ("").
+  cityNames   :           "Cupertino,Wroclaw"
 
   # 12 or 24 hour time format.
-  timeFormat          :         "12"
+  timeFormat  :           "12"
 
 command: "osascript Sidebar.widget/WorldClock.widget/WorldClock.applescript '#{options.locations}' '#{options.cityNames}' #{options.timeFormat}"
 
-refreshFrequency: '1s'
+refreshFrequency: '1m'
 
 style: """
   .wrapper
