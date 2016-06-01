@@ -3,17 +3,21 @@
 # Haphazardly adjusted and mangled by Pe8er (https://github.com/Pe8er)
 # https://scotch.io/tutorials/a-visual-guide-to-css3-flexbox-properties was very helpful to understand this beast.
 
-flexDirection  : 'column-reverse'        # default: 'row'
-justifyContent : 'flex-start' # default: 'flex'-start'
-alignContent   : 'stretch'    # default: 'stretch'
-flexWrap       : 'nowrap'       # default: 'nowrap'
-alignItems     : 'flex-end'    # default: 'stretch'
-
+widgetEnable    : true
+flexDirection   : 'column-reverse'        # default: 'row'
+justifyContent  : 'flex-start' # default: 'flex'-start'
+alignContent    : 'stretch'    # default: 'stretch'
+flexWrap        : 'nowrap'       # default: 'nowrap'
+alignItems      : 'flex-end'    # default: 'stretch'
 refreshFrequency: false
+command         : "echo"
 
-command: "echo"
+render: (output) ->
 
-render: (output) -> """
+  if @widgetEnable is false
+    $(domEl).find('.widget').hide()
+
+  """
   <style>
     #__uebersicht {
       display: flex;

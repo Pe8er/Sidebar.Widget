@@ -74,12 +74,14 @@ end if
 -- Set up info about conflicts.
 
 set conflicts to count_matches(startTimes, item 1 of startTimes) - 1
-if conflicts > 1 then
-	set plural to "s"
-else
-	set plural to ""
+if conflicts is not 0 then
+	if conflicts > 1 then
+		set plural to "s"
+	else
+		set plural to ""
+	end if
+	set meta to "+" & conflicts & " conflict" & plural
 end if
-if conflicts is not 0 then set meta to "+" & conflicts & " conflict" & plural
 
 
 -- Return the output for Ubersicht.
