@@ -120,4 +120,4 @@ update: (output, domEl) ->
     div.parent('div').css('order', '7')
     div.parent('div').css('flex', '0 1 auto')
   else
-    div.hide()
+    div.remove()

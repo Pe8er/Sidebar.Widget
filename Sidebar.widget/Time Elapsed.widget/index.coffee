@@ -91,7 +91,7 @@ update: (output, domEl) ->
     elapsedHTML = ''
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '4')
+    div.parent('div').css('order', '1')
     div.parent('div').css('flex', '0 1 auto')
   else
-    div.hide()
+    div.remove()

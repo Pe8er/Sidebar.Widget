@@ -14,11 +14,36 @@ options =
   # 12 or 24 hour time format.
   timeFormat  :           "12"
 
+  # Choose color theme.
+  widgetTheme: "dark"                   # dark | light
+
 command: "osascript Sidebar.widget/WorldClock.widget/WorldClock.applescript '#{options.locations}' '#{options.cityNames}' #{options.timeFormat}"
 
 refreshFrequency: '1m'
 
 style: """
+  // Let's do theming first.
+
+  if #{options.widgetTheme} == dark
+    fColor = white
+    bgColor = black
+  else
+    fColor = black
+    bgColor = white
+
+  // Specify color palette.
+
+  fColor1 = rgba(fColor,1.0)
+  fColor08 = rgba(fColor,0.8)
+  fColor05 = rgba(fColor,0.5)
+  fColor02 = rgba(fColor,0.2)
+  bgColor1 = rgba(bgColor,1.0)
+  bgColor08 = rgba(bgColor,0.7)
+  bgColor05 = rgba(bgColor,0.5)
+  bgColor02 = rgba(bgColor,0.2)
+
+  background-color bgColor02
+
   .wrapper
     text-align center
     font-size 8pt
@@ -35,11 +60,11 @@ style: """
     overflow hidden
 
   .time
-    color white
+    color fColor1
     font-weight 700
 
   .timezone
-    color: rgba(white,0.5)
+    color: fColor05
     white-space nowrap
     overflow hidden
     text-overflow ellipsis
@@ -84,7 +109,7 @@ update: (output, domEl) ->
     # div.html("<div class='wrapper'>" + output + "</div>")
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '3')
+    div.parent('div').css('order', '6')
     div.parent('div').css('flex', '0 1 auto')
   else
-    div.hide()
+    div.remove()

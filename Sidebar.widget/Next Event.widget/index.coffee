@@ -101,7 +101,7 @@ update: (output, domEl) ->
       div.find('.meta').css('display', 'none')
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '2')
+    div.parent('div').css('order', '4')
     div.parent('div').css('flex', '0 1 auto')
   else
-    div.hide()
+    div.remove()

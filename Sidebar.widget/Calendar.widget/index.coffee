@@ -18,21 +18,43 @@ options =
   # Specify the first day of the week (Monday or Sunday)
   firstDay    : Monday
 
+  # Choose color theme.
+  widgetTheme: "dark"                   # dark | light
+
 refreshFrequency: '1h'
 
 command: options.firstDay
 
 style: """
-  white05 = rgba(white,0.5)
-  white02 = rgba(white,0.2)
+
+  // Let's do theming first.
+
+  if #{options.widgetTheme} == dark
+    fColor = white
+    bgColor = black
+  else
+    fColor = black
+    bgColor = white
+
+  // Specify color palette.
+
+  fColor1 = rgba(fColor,1.0)
+  fColor08 = rgba(fColor,0.8)
+  fColor05 = rgba(fColor,0.5)
+  fColor02 = rgba(fColor,0.2)
+  bgColor1 = rgba(bgColor,1.0)
+  bgColor08 = rgba(bgColor,0.7)
+  bgColor05 = rgba(bgColor,0.5)
+  bgColor02 = rgba(bgColor,0.2)
 
   width 176px
   height auto
   overflow hidden
+  background-color bgColor02
 
   .wrapper
     height 100%
-    color white
+    color fColor1
     padding 8px
     align-items center
     display flex
@@ -50,27 +72,27 @@ style: """
     &:first-child td
       font-size 12pt
       font-weight 200
-      color white
+      color fColor1
 
     &:last-child td
       font-size 7.5pt
       padding-bottom 8px
       font-weight 500
-      color white05
+      color fColor05
 
   tbody td
     font-size 7.5pt
 
   .today
     font-weight bold
-    background white02
+    background fColor02
     width 24px
     height 24px
     margin 0
     padding 0
 
   .grey
-    color: white05
+    color: fColor05
 """
 
 options : options
@@ -151,7 +173,7 @@ update: (output, domEl) ->
     @updateBody rows, table
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '1')
+    div.parent('div').css('order', '5')
     div.parent('div').css('flex', '0 1 auto')
   else
-    div.hide()
+    div.remove()

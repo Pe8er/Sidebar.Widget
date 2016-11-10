@@ -20,44 +20,53 @@ style: """
   white05   = rgba(white,0.5)
   icon-size = 28px
 
-  overflow hidden
+  *, *:before, *:after
+    box-sizing border-box
 
   @font-face
     font-family Weather
     src url(Sidebar.widget/WeatherNow.widget/icons.svg) format('svg')
 
-  .current
+  .wrapper
     color white1
-    white-space nowrap
     width 176px
-    padding 8px 0
-    align-items center
-    display flex
+    padding 8px
+    position relative
+    line-height 11pt
+    height 64px
 
   .icon
     font-family Weather
     font-size icon-size
     max-height icon-size
-    text-align center
     width icon-size
     max-width icon-size
+    text-align center
     float left
-    margin auto 16px
+    position relative
+    top 50%
+    -webkit-transform translateY(-50%)
+    margin auto 16px auto 8px
 
-  .wrapper
-    float left
+  .text
     text-align left
     width auto
+    position relative
+    top 50%
+    -webkit-transform translateY(-50%)
+    height auto
+    overflow hidden
 
   .temperature
     font-size 12pt
     font-weight 700
 
-  .text, .location
+  .condition, .location
     font-size 8pt
     font-weight 200
-    color white1
     text-overflow ellipsis
+    overflow hidden
+    white-space nowrap
 
   .location
     color white05
@@ -84,11 +93,11 @@ appearance: appearance
 options : options
 
 render: -> """
-  <div class='current #{@appearance.iconSet}'>
+  <div class='wrapper #{@appearance.iconSet}'>
     <div class='icon'></div>
-    <div class='wrapper'>
+    <div class='text'>
       <div class='temperature'></div>
-      <div class='text'></div>
+      <div class='condition'></div>
       <div class='location'></div>
     </div>
   </div>
@@ -111,18 +120,18 @@ update: (output, domEl) ->
     @$domEl.children().show()
 
     # Sort out flex-box positioning.
-    $(domEl).parent('div').css('order', '5')
+    $(domEl).parent('div').css('order', '3')
     $(domEl).parent('div').css('flex', '0 1 auto')
   else
-    @$domEl.hide()
+    @$domEl.remove()
 
 renderCurrent: (channel) ->
   weather  = channel.item
   location = channel.location
 
-  el = @$domEl.find('.current')
+  el = @$domEl.find('.wrapper')
   el.find('.temperature').text "#{Math.round(weather.condition.temp)}°"
-  el.find('.text').text weather.condition.text
+  el.find('.condition').text weather.condition.text
   el.find('.location').html location.city
   el.find('.icon').html @getIcon(
     weather.condition.code,

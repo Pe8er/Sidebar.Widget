@@ -8,14 +8,13 @@ flexDirection   : 'column-reverse'        # default: 'row'
 justifyContent  : 'flex-start' # default: 'flex'-start'
 alignContent    : 'stretch'    # default: 'stretch'
 flexWrap        : 'nowrap'       # default: 'nowrap'
-alignItems      : 'flex-end'    # default: 'stretch'
+alignItems      : 'flex-end'    # default: 'stretch'. 'flex-start' for left, 'flex-end' for right.
 refreshFrequency: false
-command         : "echo"
 
 render: (output) ->
 
   if @widgetEnable is false
-    $(domEl).find('.widget').hide()
+    $(domEl).find('.widget').remove()
 
   """
   <style>
@@ -33,11 +32,20 @@ render: (output) ->
     }
     .widget {
       position: relative;
-      -webkit-backdrop-filter: blur(20px) brightness(70%) contrast(120%) saturate(140%);
+      background-color: rgba(0,0,0,.2);
+      -webkit-backdrop-filter: blur(30px) brightness(80%) contrast(100%) saturate(140%);
       margin-top: 1px;
+    }
+
+    #__uebersicht {
+     // -webkit-backdrop-filter: blur(30px) brightness(80%) contrast(100%) saturate(140%);
     }
   </style>
   """
 
-update: (output, domEl) ->
-  $(domEl).parent('div').css('position', 'absolute')
+style: """
+  margin-top 0
+"""
+
+# update: (output, domEl) ->
+#   $(domEl).parent('div').css('position', 'absolute')

@@ -6,20 +6,36 @@ options =
   # Easily enable or disable the widget.
   widgetEnable: true
 
+  # Choose color theme.
+  widgetTheme: "dark"                   # dark | light
+
 command: "osascript 'Sidebar.widget/Battery.widget/battery.applescript'"
 
 refreshFrequency: '10s'
 
 style: """
 
-  white1 = rgba(white,1)
-  white05 = rgba(white,0.5)
-  white02 = rgba(white,0.2)
+  if #{options.widgetTheme} == dark
+    fColor = white
+    bgColor = black
+  else
+    fColor = black
+    bgColor = white
+
+  fColor1 = rgba(fColor,1.0)
+  fColor08 = rgba(fColor,0.8)
+  fColor05 = rgba(fColor,0.5)
+  fColor02 = rgba(fColor,0.2)
+  bgColor1 = rgba(bgColor,1.0)
+  bgColor08 = rgba(bgColor,0.7)
+  bgColor05 = rgba(bgColor,0.5)
+  bgColor02 = rgba(bgColor,0.2)
 
   width 176px
   overflow hidden
   white-space nowrap
   opacity 0
+  background-color bgColor02
 
   *, *:before, *:after
     box-sizing border-box
@@ -27,27 +43,13 @@ style: """
   .wrapper
     font-size 8pt
     line-height 11pt
-    color white
     margin 2px
     height 20px
     opacity 1
     position relative
 
-  .box
-    width 100%
-    position absolute
-    z-index 2
-    text-align center
-    color white05
-
-  .box span
-    display block
-    color white
-    font-weight 700
-    line-height 20px
-
   .bar
-    background-color white1
+    background-color fColor02
     height 20px
     min-width 1%
     max-width 100%
@@ -56,6 +58,12 @@ style: """
     top 0
     left 0
 
+  .box
+    width 100%
+    position absolute
+    z-index 2
+    text-align center
+
   .time
     display block
     background none
@@ -63,6 +71,10 @@ style: """
     max-width 30%
     min-width 10%
     margin 0 auto
+    color fColor1
+    font-weight 700
+    line-height 20px
+
 """
 
 options : options
@@ -100,8 +112,8 @@ update: (output, domEl) ->
       div.animate({ opacity: 1 }, 250)
       if parseInt(values[0]) < 10
         div.find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
-      else
-        div.find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
+      # else
+      #   div.find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
 
       if values[2] == 'charging'
         div.find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
@@ -112,7 +124,7 @@ update: (output, domEl) ->
       div.parent('div').css('margin-top', '-1px')
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '6')
+    div.parent('div').css('order', '7')
     div.parent('div').css('flex', '0 1 auto')
   else
-    div.hide()
+    div.remove()
