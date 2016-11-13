@@ -92,6 +92,9 @@ update: (output, domEl) ->
     if values[0] == 'No Events'
       div.find('.wrapper').css('display', 'none')
       div.parent('div').css('margin-top', '-1px')
+    else if values[0] == 'icalbuddy'
+      div.find('.time').css('display', 'none')
+      div.find('.text').html("Please install icalBuddy.<br />'brew install ical-buddy' seems like a good idea.").css('white-space', 'normal').css('text-align', 'center').css('margin-right', '0')
     else
       div.find('.wrapper').css('display', 'block')
 
