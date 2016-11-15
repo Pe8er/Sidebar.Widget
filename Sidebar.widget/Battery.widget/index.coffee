@@ -18,9 +18,11 @@ style: """
   if #{options.widgetTheme} == dark
     fColor = white
     bgColor = black
+    bar = f
   else
     fColor = black
     bgColor = white
+    bar = bg
 
   fColor1 = rgba(fColor,1.0)
   fColor08 = rgba(fColor,0.8)
@@ -42,14 +44,13 @@ style: """
 
   .wrapper
     font-size 8pt
-    line-height 11pt
     margin 2px
     height 20px
     opacity 1
     position relative
 
   .bar
-    background-color fColor02
+    background-color bar + Color05
     height 20px
     min-width 1%
     max-width 100%
@@ -60,20 +61,24 @@ style: """
 
   .box
     width 100%
-    position absolute
+    height @width
+    position relative
     z-index 2
-    text-align center
+    display flex
+    align-items center
+    justify-content center
+
+  svg
+    fill fColor1
+
+  .icon
+    width 6px
+    height 12px
+    margin 0 4px
 
   .time
-    display block
-    background none
-    width auto
-    max-width 30%
-    min-width 10%
-    margin 0 auto
     color fColor1
     font-weight 700
-    line-height 20px
 
 """
 
@@ -88,6 +93,7 @@ render: (output) ->
     <div class='wrapper'>
       <div class='bar'></div>
       <div class='box'>
+        <span class='icon'></span>
         <span class='time'>No Data</span>
       </div>
      </div>"
@@ -116,9 +122,9 @@ update: (output, domEl) ->
         div.find('.bar').css('background-color', '')
 
       if values[2] == 'charging'
-        div.find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
+        div.find('.icon').html('<svg viewBox="0 0 6 12"><g transform="translate(-1332.000000, -610.000000)"><path d="M1338,610 L1332,616 L1335,617 L1332,622 L1338,616 L1335,615 L1338,610 Z"></path></g></svg>').show()
       else
-        div.find('.time').css('background', 'none')
+        div.find('.icon').hide()
     else
       div.animate({ opacity: 0 }, 250)
       div.parent('div').css('margin-top', '-1px')
