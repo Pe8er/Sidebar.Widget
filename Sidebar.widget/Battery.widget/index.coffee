@@ -11,7 +11,7 @@ options =
 
 command: "osascript 'Sidebar.widget/Battery.widget/battery.applescript'"
 
-refreshFrequency: '10s'
+refreshFrequency: '1s'
 
 style: """
 
@@ -112,8 +112,8 @@ update: (output, domEl) ->
       div.animate({ opacity: 1 }, 250)
       if parseInt(values[0]) < 10
         div.find('.bar').css('background-color', 'rgba(255,0,0,0.5)')
-      # else
-      #   div.find('.bar').css('background-color', 'rgba(255,255,255,0.2)')
+      else
+        div.find('.bar').css('background-color', '')
 
       if values[2] == 'charging'
         div.find('.time').css('background', 'url(Sidebar.widget/battery.widget/Bolt.svg) left center no-repeat')
