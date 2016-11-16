@@ -38,12 +38,13 @@ style: """
   white-space nowrap
   opacity 0
   background-color bgColor02
+  font-size 8pt
+  line-height @font-size
 
   *, *:before, *:after
     box-sizing border-box
 
   .wrapper
-    font-size 8pt
     margin 2px
     height 20px
     opacity 1
