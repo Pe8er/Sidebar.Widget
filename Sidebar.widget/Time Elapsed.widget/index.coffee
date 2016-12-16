@@ -11,7 +11,7 @@ options =
 
 command: "osascript 'Sidebar.widget/Time Elapsed.widget/Time Elapsed.applescript' \"#{options.theDate}\""
 
-refreshFrequency: '1h'
+refreshFrequency: options.widgetEnable is false ? false : '1h'
 
 style: """
   white1 = rgba(white,1)
