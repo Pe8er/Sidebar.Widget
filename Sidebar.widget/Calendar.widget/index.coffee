@@ -12,6 +12,9 @@ options =
   # Easily enable or disable the widget.
   widgetEnable: true
 
+  # Order in the list (flexbox order)
+  order: 5
+
   # Set this to true to enable previous and next month dates, or false to disable.
   otherMonths : true
 
@@ -173,7 +176,7 @@ update: (output, domEl) ->
     @updateBody rows, table
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '5')
+    div.parent('div').css('order', options.order)
     div.parent('div').css('flex', '0 1 auto')
   else
     div.remove()

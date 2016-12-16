@@ -6,6 +6,9 @@ options =
   # Easily enable or disable the widget.
   widgetEnable: false
 
+  # Order in the list (flexbox order)
+  order: 7
+
 command: "osascript 'Sidebar.widget/Playbox.widget/as/Get Current Track.applescript'"
 
 refreshFrequency: '1s'
@@ -117,7 +120,7 @@ update: (output, domEl) ->
           div.find('.art').css('background-image', 'url('+tArtwork+')')
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '7')
+    div.parent('div').css('order', options.order)
     div.parent('div').css('flex', '0 1 auto')
   else
     div.remove()
