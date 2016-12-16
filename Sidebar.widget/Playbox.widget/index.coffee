@@ -8,7 +8,7 @@ options =
 
 command: "osascript 'Sidebar.widget/Playbox.widget/as/Get Current Track.applescript'"
 
-refreshFrequency: '1s'
+refreshFrequency: options.widgetEnable is false ? false : '1s'
 
 style: """
 
