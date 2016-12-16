@@ -8,7 +8,7 @@ options =
 
 command: "osascript 'Sidebar.widget/Playbox.widget/as/Get Current Track.applescript'"
 
-refreshFrequency: '1s'
+refreshFrequency: if options.widgetEnable then '1s' else false
 
 style: """
 
@@ -81,43 +81,42 @@ render: (output) ->
 
 # Update the rendered output.
 update: (output, domEl) ->
-
   # Get our main DIV.
   div = $(domEl)
-
-  if @options.widgetEnable
-    # Get our pieces.
-    values = output.slice(0,-1).split(" ~ ")
-
-    # Initialize our HTML.
-    medianowHTML = ''
-
-    # Progress bar things.
-    tDuration = values[4]
-    tPosition = values[5]
-    tArtwork = values[6]
-    tWidth = div.width();
-    tCurrent = (tPosition / tDuration) * tWidth
-
-    currArt = div.find('.art').css('background-image').split('/').pop().slice(0,-1)
-
-    if values[0] == 'NA'
-      div.animate({ opacity: 0 }, 250)
-      setTimeout(div.hide(1), 1)
-    else
-      div.animate({ opacity: 1 }, 250, "swing", setTimeout(div.show(1), 1))
-      div.find('.song').html(values[1])
-      div.find('.artist').html(values[0])
-      div.find('.album').html(values[2])
-      div.find('.progress').css width: tCurrent
-      if tArtwork isnt currArt
-        if tArtwork =='NA'
-          div.find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/default.png)')
-        else
-          div.find('.art').css('background-image', 'url('+tArtwork+')')
-
-    # Sort out flex-box positioning.
-    div.parent('div').css('order', '7')
-    div.parent('div').css('flex', '0 1 auto')
-  else
+  if options.widgetEnable is false
     div.remove()
+    return
+
+  # Get our pieces.
+  values = output.slice(0,-1).split(" ~ ")
+
+  # Initialize our HTML.
+  medianowHTML = ''
+
+  # Progress bar things.
+  tDuration = values[4]
+  tPosition = values[5]
+  tArtwork = values[6]
+  tWidth = div.width();
+  tCurrent = (tPosition / tDuration) * tWidth
+
+  currArt = div.find('.art').css('background-image').split('/').pop().slice(0,-1)
+
+  if values[0] == 'NA'
+    div.animate({ opacity: 0 }, 250)
+    setTimeout(div.hide(1), 1)
+  else
+    div.animate({ opacity: 1 }, 250, "swing", setTimeout(div.show(1), 1))
+    div.find('.song').html(values[1])
+    div.find('.artist').html(values[0])
+    div.find('.album').html(values[2])
+    div.find('.progress').css width: tCurrent
+    if tArtwork isnt currArt
+      if tArtwork =='NA'
+        div.find('.art').css('background-image', 'url(Sidebar.widget/Playbox.widget/as/default.png)')
+      else
+        div.find('.art').css('background-image', 'url('+tArtwork+')')
+
+  # Sort out flex-box positioning.
+  div.parent('div').css('order', '7')
+  div.parent('div').css('flex', '0 1 auto')

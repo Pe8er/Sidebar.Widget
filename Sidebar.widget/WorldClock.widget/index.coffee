@@ -19,7 +19,7 @@ options =
 
 command: "osascript Sidebar.widget/WorldClock.widget/WorldClock.applescript '#{options.locations}' '#{options.cityNames}' #{options.timeFormat}"
 
-refreshFrequency: '1m'
+refreshFrequency: if options.widgetEnable then '1m' else false
 
 style: """
   // Let's do theming first.
@@ -78,38 +78,36 @@ render: -> """
 
 # Update the rendered output.
 update: (output, domEl) ->
-
-  # Get our main DIV.
   div = $(domEl)
-
-  if @options.widgetEnable
-    # Get our timezones and times.
-    zones=output.split(";")
-
-    # Initialize our HTML.
-    timeHTML = ''
-
-    # Loop through each of the time zones.
-    for zone, idx in zones
-
-      # If the zone is not empty (e.g. the last newline), let's add it to the HTML.
-      if zone != ''
-
-        # Split the timezone from the time.
-        values = zone.split("~")
-
-        # Create the DIVs for each timezone/time. The last item is unique in that we don't want to display the border.
-        # if idx < zones.length - 2
-        timeHTML = timeHTML + "<div class='box'><div class='time'>" + values[1] + "</div><div class='timezone'>" + values[0] + "</div></div>"
-        # else
-          #timeHTML = timeHTML + "<div class='lastbox'><div class='time'>" + values[1] + "</div><div class='timezone'>" + values[0] + "</div></div>"
-
-    # Set the HTML of our main DIV.
-    div.html("<div class='wrapper'>" + timeHTML + "</div>")
-    # div.html("<div class='wrapper'>" + output + "</div>")
-
-    # Sort out flex-box positioning.
-    div.parent('div').css('order', '6')
-    div.parent('div').css('flex', '0 1 auto')
-  else
+  if options.widgetEnable is false
     div.remove()
+    return
+
+  # Get our timezones and times.
+  zones = output.split(";")
+
+  # Initialize our HTML.
+  timeHTML = ''
+
+  # Loop through each of the time zones.
+  for zone, idx in zones
+
+    # If the zone is not empty (e.g. the last newline), let's add it to the HTML.
+    if zone != ''
+
+      # Split the timezone from the time.
+      values = zone.split("~")
+
+      # Create the DIVs for each timezone/time. The last item is unique in that we don't want to display the border.
+      # if idx < zones.length - 2
+      timeHTML = timeHTML + "<div class='box'><div class='time'>" + values[1] + "</div><div class='timezone'>" + values[0] + "</div></div>"
+  # else
+  #timeHTML = timeHTML + "<div class='lastbox'><div class='time'>" + values[1] + "</div><div class='timezone'>" + values[0] + "</div></div>"
+
+  # Set the HTML of our main DIV.
+  div.html("<div class='wrapper'>" + timeHTML + "</div>")
+  # div.html("<div class='wrapper'>" + output + "</div>")
+
+  # Sort out flex-box positioning.
+  div.parent('div').css('order', '6')
+  div.parent('div').css('flex', '0 1 auto')
