@@ -8,7 +8,7 @@ options =
 
 command: "osascript 'Sidebar.widget/Next Event.widget/Next Event.applescript'"
 
-refreshFrequency: '1m'
+refreshFrequency: options.widgetEnable is false ? false : '1m'
 
 style: """
   white05 = rgba(white,0.5)
@@ -75,36 +75,35 @@ render: (output) ->
 
 # Update the rendered output.
 update: (output, domEl) ->
-
   # Get our main DIV.
   div = $(domEl)
-
-  if @options.widgetEnable
-    # Get our pieces.
-    values = output.slice(0,-1).split("^")
-
-    # Initialize main HTML.
-    NextEventHTML = ''
-    div.find('.time').html(values[0])
-    div.find('.eventName').html(values[1])
-    div.find('.meta').html(values[2])
-
-    if values[0] == 'No Events'
-      div.find('.wrapper').css('display', 'none')
-      div.parent('div').css('margin-top', '-1px')
-    else if values[0] == 'icalbuddy'
-      div.find('.time').css('display', 'none')
-      div.find('.text').html("Please install icalBuddy.<br />'brew install ical-buddy' seems like a good idea.").css('white-space', 'normal').css('text-align', 'center').css('margin-right', '0')
-    else
-      div.find('.wrapper').css('display', 'block')
-
-    if parseInt(values[2]) != 0
-      div.find('.meta').css('display', 'block')
-    else
-      div.find('.meta').css('display', 'none')
-
-    # Sort out flex-box positioning.
-    div.parent('div').css('order', '4')
-    div.parent('div').css('flex', '0 1 auto')
-  else
+  if options.widgetEnable is false
     div.remove()
+    return
+
+  # Get our pieces.
+  values = output.slice(0,-1).split("^")
+
+  # Initialize main HTML.
+  NextEventHTML = ''
+  div.find('.time').html(values[0])
+  div.find('.eventName').html(values[1])
+  div.find('.meta').html(values[2])
+
+  if values[0] == 'No Events'
+    div.find('.wrapper').css('display', 'none')
+    div.parent('div').css('margin-top', '-1px')
+  else if values[0] == 'icalbuddy'
+    div.find('.time').css('display', 'none')
+    div.find('.text').html("Please install icalBuddy.<br />'brew install ical-buddy' seems like a good idea.").css('white-space', 'normal').css('text-align', 'center').css('margin-right', '0')
+  else
+    div.find('.wrapper').css('display', 'block')
+
+  if parseInt(values[2]) != 0
+    div.find('.meta').css('display', 'block')
+  else
+    div.find('.meta').css('display', 'none')
+
+  # Sort out flex-box positioning.
+  div.parent('div').css('order', '4')
+  div.parent('div').css('flex', '0 1 auto')
