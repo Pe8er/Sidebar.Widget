@@ -8,7 +8,7 @@ options =
 
 command: "osascript 'Sidebar.widget/Next Event.widget/Next Event.applescript'"
 
-refreshFrequency: options.widgetEnable is false ? false : '1m'
+refreshFrequency: if options.widgetEnable then '1m' else false
 
 style: """
   white05 = rgba(white,0.5)

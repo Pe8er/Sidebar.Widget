@@ -11,7 +11,7 @@ options =
 
 command: "osascript 'Sidebar.widget/Battery.widget/battery.applescript'"
 
-refreshFrequency: options.widgetEnable is false ? false : '1s'
+refreshFrequency: if options.widgetEnable then '1s' else false
 
 style: """
 

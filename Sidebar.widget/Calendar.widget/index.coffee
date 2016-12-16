@@ -21,7 +21,7 @@ options =
   # Choose color theme.
   widgetTheme: "dark"                   # dark | light
 
-refreshFrequency: options.widgetEnable is false ? false : '1h'
+refreshFrequency: if options.widgetEnable then '1h' else false
 
 command: options.firstDay
 

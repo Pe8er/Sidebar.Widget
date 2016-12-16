@@ -19,7 +19,7 @@ options =
 
 command: "osascript Sidebar.widget/WorldClock.widget/WorldClock.applescript '#{options.locations}' '#{options.cityNames}' #{options.timeFormat}"
 
-refreshFrequency: options.widgetEnable is false ? false: '1m'
+refreshFrequency: if options.widgetEnable then '1m' else false
 
 style: """
   // Let's do theming first.

@@ -13,7 +13,7 @@ options =
 appearance =
   iconSet       : 'original'        # "original" for the original icons
 
-refreshFrequency: options.widgetEnable is false ? false: '10m' # Update every 10 minutes
+refreshFrequency: if options.widgetEnable then '10m' else false # Update every 10 minutes
 
 style: """
   white1    = rgba(white,1)
