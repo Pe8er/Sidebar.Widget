@@ -79,19 +79,19 @@ render: (output) ->
 
 # Update the rendered output.
 update: (output, domEl) ->
-
   # Get our main DIV.
   div = $(domEl)
 
-  if @options.widgetEnable
-    # Get our pieces.
-    values = output.slice(0,-1).split(" ")
-
-    # Initialize our HTML.
-    elapsedHTML = ''
-
-    # Sort out flex-box positioning.
-    div.parent('div').css('order', '1')
-    div.parent('div').css('flex', '0 1 auto')
-  else
+  if @options.widgetEnable is false
     div.remove()
+    return
+
+  # Get our pieces.
+  values = output.slice(0,-1).split(" ")
+
+  # Initialize our HTML.
+  elapsedHTML = ''
+
+  # Sort out flex-box positioning.
+  div.parent('div').css('order', '1')
+  div.parent('div').css('flex', '0 1 auto')
