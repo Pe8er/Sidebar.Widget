@@ -15,6 +15,7 @@ render: (output) ->
 
   if @widgetEnable is false
     $(domEl).find('.widget').remove()
+    return
 
   """
   <style>
