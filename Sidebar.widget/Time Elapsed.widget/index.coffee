@@ -6,6 +6,9 @@ options =
   # Easily enable or disable the widget.
   widgetEnable: true
 
+  # Order in the list (flexbox order)
+  order: 1
+
   # Set the start date to count from.
   theDate     : "10/29/2012"
 
@@ -91,7 +94,7 @@ update: (output, domEl) ->
     elapsedHTML = ''
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '1')
+    div.parent('div').css('order', options.order)
     div.parent('div').css('flex', '0 1 auto')
   else
     div.remove()

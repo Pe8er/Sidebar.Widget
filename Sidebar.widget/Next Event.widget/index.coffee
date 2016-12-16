@@ -6,6 +6,9 @@ options =
   # Easily enable or disable the widget.
   widgetEnable: true
 
+  # Order in the list (flexbox order)
+  order: 4
+
 command: "osascript 'Sidebar.widget/Next Event.widget/Next Event.applescript'"
 
 refreshFrequency: '1m'
@@ -104,7 +107,7 @@ update: (output, domEl) ->
       div.find('.meta').css('display', 'none')
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '4')
+    div.parent('div').css('order', options.order)
     div.parent('div').css('flex', '0 1 auto')
   else
     div.remove()

@@ -6,6 +6,9 @@ options =
   # Easily enable or disable the widget.
   widgetEnable: true
 
+  # Order in the list (flexbox order)
+  order: 7
+
   # Choose color theme.
   widgetTheme: "dark"                   # dark | light
 
@@ -131,7 +134,7 @@ update: (output, domEl) ->
       div.parent('div').css('margin-top', '-1px')
 
     # Sort out flex-box positioning.
-    div.parent('div').css('order', '7')
+    div.parent('div').css('order', options.order)
     div.parent('div').css('flex', '0 1 auto')
   else
     div.remove()

@@ -5,6 +5,7 @@
 
 options =
   widgetEnable  : true              # Easily enable or disable the widget.
+  order         : 3                 # Order of this widget (flexbox order)
   city          : "San Francisco"   # default city in case location detection fails
   region        : "US"              # default region in case location detection fails
   units         : 'C'               # c for celcius. f for Fahrenheit
@@ -120,7 +121,7 @@ update: (output, domEl) ->
     @$domEl.children().show()
 
     # Sort out flex-box positioning.
-    $(domEl).parent('div').css('order', '3')
+    $(domEl).parent('div').css('order', options.order)
     $(domEl).parent('div').css('flex', '0 1 auto')
   else
     @$domEl.remove()
